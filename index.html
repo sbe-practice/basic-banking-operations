@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Banking Operations · Unified Exam</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #f0f4fb;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .exam-wrapper {
+      max-width: 1100px;
+      width: 100%;
+      background: white;
+      border-radius: 32px;
+      box-shadow: 0 25px 50px -10px rgba(0,20,50,0.15);
+      padding: 30px 35px;
+      transition: 0.2s;
+      margin-top: 20px;
+    }
+
+    /* ── LANDING ── */
+    #landingArea {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .landing-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .landing-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0a1e3c;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .landing-header h1 .highlight {
+      color: #e8841a;
+    }
+    .landing-header .status-badge {
+      font-size: 0.75rem;
+      background: #1a3f75;
+      color: white;
+      padding: 5px 18px;
+      border-radius: 40px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    .landing-sub {
+      color: #3a5580;
+      font-size: 0.95rem;
+      border-left: 4px solid #e8841a;
+      padding-left: 16px;
+      background: #f5f9ff;
+      border-radius: 0 12px 12px 0;
+      padding: 10px 16px;
+      line-height: 1.5;
+      margin-bottom: 4px;
+    }
+
+    .landing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 6px 0 10px 0;
+    }
+    .landing-card {
+      background: #f8faff;
+      border-radius: 20px;
+      padding: 18px 22px;
+      border: 1px solid #e2eaf5;
+      transition: 0.15s;
+    }
+    .landing-card:hover {
+      border-color: #1a3f75;
+      box-shadow: 0 4px 12px rgba(26, 63, 117, 0.06);
+    }
+    .landing-card h3 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #1a3f75;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .landing-card h3 .icon {
+      font-size: 1.1rem;
+    }
+    .module-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .pill {
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      border: 1.5px solid #d7e0ec;
+      background: white;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: #4a5f7a;
+      user-select: none;
+    }
+    .pill.active {
+      border-color: #1a3f75;
+      background: #1a3f75;
+      color: white;
+    }
+    .pill:hover:not(.active) {
+      border-color: #1a3f75;
+      background: #eef4fc;
+    }
+    .pill .count {
+      background: rgba(255,255,255,0.2);
+      padding: 0 8px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      margin-left: 4px;
+    }
+    .pill.active .count {
+      background: rgba(255,255,255,0.2);
+    }
+    .select-all-btn {
+      padding: 4px 16px;
+      font-size: 0.75rem;
+      background: #e6edf8;
+      border: 1px solid #b8cae0;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #1a3f75;
+      transition: 0.15s;
+    }
+    .select-all-btn:hover {
+      background: #d4e0f5;
+    }
+    .landing-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0 6px 0;
+      border-top: 1px solid #dee7f2;
+      margin-top: 4px;
+    }
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .control-group label {
+      font-weight: 500;
+      color: #1f334a;
+      font-size: 0.85rem;
+    }
+    .control-group input[type="number"] {
+      width: 70px;
+      padding: 6px 10px;
+      border: 1px solid #c0cee2;
+      border-radius: 40px;
+      font-weight: 600;
+      text-align: center;
+      background: white;
+      font-size: 0.9rem;
+    }
+    .control-group input[type="number"]:focus {
+      outline: 2px solid #1a3f75;
+      border-color: transparent;
+    }
+    .btn {
+      border: none;
+      background: #eef2f9;
+      padding: 9px 28px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #1f3a6b;
+      cursor: pointer;
+      transition: 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: #1a3f75;
+      color: white;
+      box-shadow: 0 4px 12px rgba(26, 63, 117, 0.25);
+    }
+    .btn-primary:hover {
+      background: #0f2d55;
+      transform: scale(1.02);
+    }
+    .btn-primary:disabled {
+      opacity: 0.5;
+      pointer-events: none;
+      transform: none;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid #c0cee2;
+      color: #1f334a;
+    }
+    .btn-outline:hover {
+      background: #eef4fc;
+    }
+    .btn-orange {
+      background: #e8841a;
+      color: white;
+      box-shadow: 0 4px 12px rgba(232, 132, 26, 0.3);
+    }
+    .btn-orange:hover {
+      background: #d07310;
+      transform: scale(1.02);
+    }
+    .btn-orange:disabled {
+      opacity: 0.5;
+      pointer-events: none;
+      transform: none;
+    }
+    .timer-preview {
+      font-weight: 600;
+      color: #1a3f75;
+      font-size: 1rem;
+      min-width: 55px;
+    }
+
+    /* ── KBQ GUIDELINES ── */
+    .kbq-guidelines {
+      background: #f5f9ff;
+      border: 1px solid #dce5f0;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+    .kbq-guidelines h4 {
+      color: #1a3f75;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .kbq-guidelines ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+    }
+    .kbq-guidelines ul li {
+      font-size: 0.82rem;
+      color: #2a405c;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .kbq-guidelines ul li::before {
+      content: '•';
+      color: #e8841a;
+      font-weight: 700;
+    }
+
+    /* ── FLOATING TIMER ── */
+    #floatingTimer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: #1a3f75;
+      color: white;
+      padding: 10px 22px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      display: none;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255,255,255,0.15);
+    }
+    #floatingTimer.warning {
+      background: #b22222;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    #floatingTimer .timer-label {
+      font-size: 0.6rem;
+      font-weight: 400;
+      opacity: 0.7;
+      display: block;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    /* ── EXAM MODE ── */
+    #examArea {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .exam-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #dee7f2;
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+    .exam-top .timer-display {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1a3f75;
+      background: #eaf0fa;
+      padding: 0 26px;
+      border-radius: 60px;
+      letter-spacing: 1px;
+      min-width: 120px;
+      text-align: center;
+    }
+    .exam-top .exam-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .exam-top .status-badge {
+      font-size: 0.8rem;
+      background: #d4e0f5;
+      padding: 5px 18px;
+      border-radius: 40px;
+      font-weight: 500;
+    }
+    .exam-top .section-nav {
+      display: flex;
+      gap: 6px;
+      background: #eef4fc;
+      border-radius: 40px;
+      padding: 3px;
+    }
+    .exam-top .section-nav button {
+      border: none;
+      background: transparent;
+      padding: 5px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: #4a5f7a;
+      transition: 0.15s;
+    }
+    .exam-top .section-nav button.active {
+      background: white;
+      color: #1a3f75;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .exam-top .section-nav button:hover:not(.active) {
+      color: #1a3f75;
+    }
+    .progress-wrapper {
+      width: 100%;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .progress-bar-bg {
+      flex: 1;
+      height: 8px;
+      background: #e9edf4;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #e8841a;
+      border-radius: 20px;
+      transition: width 0.3s ease;
+    }
+    .progress-text {
+      font-weight: 600;
+      color: #1a3f75;
+      font-size: 0.85rem;
+      min-width: 60px;
+      text-align: right;
+    }
+    .section-progress {
+      font-size: 0.75rem;
+      color: #4a5f7a;
+      font-weight: 500;
+    }
+    .question-grid {
+      margin: 6px 0 10px 0;
+    }
+    .question-item {
+      background: #fafcff;
+      border: 1px solid #e2e9f5;
+      border-radius: 20px;
+      padding: 18px 22px;
+      margin-bottom: 14px;
+      transition: 0.1s;
+    }
+    .question-item.correct-highlight {
+      border-left: 6px solid #1d8b4f;
+      background: #f2faf5;
+    }
+    .question-item.wrong-highlight {
+      border-left: 6px solid #b13e3e;
+      background: #fdf2f2;
+    }
+    .question-text {
+      font-weight: 500;
+      font-size: 1.05rem;
+      color: #0a1e3c;
+      margin-bottom: 8px;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-left: 6px;
+    }
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.98rem;
+      background: white;
+      padding: 6px 16px 6px 12px;
+      border-radius: 40px;
+      border: 1px solid #dbe2ed;
+      transition: 0.1s;
+      cursor: pointer;
+    }
+    .options label:hover {
+      background: #eef4fe;
+      border-color: #97b3db;
+    }
+    .options input[type="radio"] {
+      accent-color: #1a3f75;
+      width: 18px;
+      height: 18px;
+    }
+    .disabled-options label {
+      cursor: default;
+      opacity: 0.8;
+    }
+    .disabled-options label:hover {
+      background: white;
+      border-color: #dbe2ed;
+    }
+    .feedback-block {
+      margin-top: 12px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: #f0f6fe;
+      font-size: 0.92rem;
+      display: none;
+      border-left: 3px solid #1a3f75;
+    }
+    .feedback-block.show {
+      display: block;
+    }
+    .feedback-block .correct-ans {
+      color: #1d7a4a;
+      font-weight: 600;
+    }
+    .feedback-block .wrong-ans {
+      color: #b13e3e;
+      font-weight: 600;
+    }
+    .feedback-block .justification {
+      margin-top: 4px;
+      color: #2a405c;
+    }
+    .clear-btn {
+      margin-top: 8px;
+      padding: 4px 16px;
+      font-size: 0.75rem;
+      background: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 30px;
+      cursor: pointer;
+      color: #555;
+      font-weight: 500;
+      transition: 0.15s;
+    }
+    .clear-btn:hover {
+      background: #e0e0e0;
+      border-color: #aaa;
+    }
+    .kbq-answer-area textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 10px 14px;
+      border: 1.5px solid #dbe2ed;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      resize: vertical;
+      transition: 0.15s;
+      background: white;
+    }
+    .kbq-answer-area textarea:focus {
+      outline: none;
+      border-color: #1a3f75;
+      box-shadow: 0 0 0 3px rgba(26, 63, 117, 0.1);
+    }
+    .kbq-answer-area textarea:disabled {
+      background: #f5f7fa;
+      cursor: not-allowed;
+    }
+    .kbq-model-answer {
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: #f0f6fe;
+      border-radius: 12px;
+      border-left: 3px solid #1a3f75;
+      font-size: 0.88rem;
+      color: #1a2a44;
+      display: none;
+      line-height: 1.6;
+    }
+    .kbq-model-answer.show {
+      display: block;
+    }
+    .kbq-model-answer strong {
+      color: #1a3f75;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .footer-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      border-top: 1px solid #dee7f2;
+      padding-top: 16px;
+    }
+    .score-area {
+      font-size: 1.2rem;
+      font-weight: 600;
+      background: #e9eff9;
+      padding: 5px 24px;
+      border-radius: 40px;
+      color: #1a3f75;
+    }
+    .submit-bottom {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .submit-bottom button {
+      padding: 12px 50px;
+      font-size: 1.1rem;
+    }
+
+    /* ── REVIEW ── */
+    #reviewArea {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #1a3f75;
+      margin-bottom: 8px;
+    }
+    .review-header h2 {
+      font-size: 1.8rem;
+      color: #0a1e3c;
+    }
+    .review-stats {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      background: #f0f4fe;
+      padding: 16px 28px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      justify-content: center;
+    }
+    .review-stat-item {
+      text-align: center;
+    }
+    .review-stat-item .number {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1a3f75;
+    }
+    .review-stat-item .label {
+      font-size: 0.85rem;
+      color: #3a5a7e;
+      font-weight: 500;
+    }
+    .review-stat-item .number.green {
+      color: #1d8b4f;
+    }
+    .review-stat-item .number.red {
+      color: #b13e3e;
+    }
+    .review-stat-item .number.orange {
+      color: #d48c1a;
+    }
+    .review-questions {
+      margin: 10px 0;
+    }
+    .review-question-item {
+      background: #fafcff;
+      border: 1px solid #e2e9f5;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+    }
+    .review-question-item .q-text {
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .review-question-item .q-answer {
+      font-size: 0.95rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+    .review-question-item .q-answer.correct {
+      background: #d4edda;
+      color: #155724;
+    }
+    .review-question-item .q-answer.wrong {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .review-question-item .q-answer.unanswered {
+      background: #fff3cd;
+      color: #856404;
+    }
+    .review-question-item .q-correct-answer {
+      font-size: 0.9rem;
+      color: #1d7a4a;
+      margin-top: 4px;
+    }
+    .review-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 700px) {
+      .exam-wrapper {
+        padding: 18px;
+      }
+      .landing-grid {
+        grid-template-columns: 1fr;
+      }
+      .exam-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .exam-top .section-nav {
+        justify-content: center;
+      }
+      .review-stats {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+      }
+      #floatingTimer {
+        font-size: 1rem;
+        padding: 6px 14px;
+        top: 10px;
+        right: 10px;
+      }
+      .landing-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .control-group {
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="exam-wrapper">
+  <!-- LANDING AREA -->
+  <div id="landingArea">
+    <div class="landing-header">
+      <h1>📘 Basic Banking <span class="highlight">Operations</span></h1>
+      <span class="status-badge">🔒 Strict mode</span>
+    </div>
+    <div class="landing-sub">133 MCQs + 31 Knowledge-Based Questions · Unified Exam Experience</div>
+
+    <div class="landing-grid">
+      <!-- Section A: MCQ Setup -->
+      <div class="landing-card">
+        <h3><span class="icon">📋</span> Section A: MCQ Settings</h3>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <label style="font-weight:500; color:#1f334a; font-size:0.85rem;">📝 #MCQs</label>
+            <input type="number" id="numMCQs" min="1" max="133" value="20" style="width:65px; padding:6px 10px; border:1px solid #c0cee2; border-radius:40px; font-weight:600; text-align:center;">
+            <span style="font-size:0.75rem; color:#4a5f7a;">(max 133)</span>
+          </div>
+          <div>
+            <div style="font-size:0.75rem; font-weight:600; color:#1a3f75; margin-bottom:6px;">Select Modules:</div>
+            <div class="module-pills" id="mcqModulePills">
+              <span class="pill active" data-mod="all" onclick="toggleMCQMod('all', this)">All <span class="count">133</span></span>
+              <span class="pill" data-mod="1" onclick="toggleMCQMod('1', this)">M1 <span class="count">10</span></span>
+              <span class="pill" data-mod="2" onclick="toggleMCQMod('2', this)">M2 <span class="count">10</span></span>
+              <span class="pill" data-mod="3" onclick="toggleMCQMod('3', this)">M3 <span class="count">10</span></span>
+              <span class="pill" data-mod="4" onclick="toggleMCQMod('4', this)">M4 <span class="count">10</span></span>
+              <span class="pill" data-mod="5" onclick="toggleMCQMod('5', this)">M5 <span class="count">10</span></span>
+              <span class="pill" data-mod="6" onclick="toggleMCQMod('6', this)">M6 <span class="count">10</span></span>
+              <span class="pill" data-mod="7" onclick="toggleMCQMod('7', this)">M7 <span class="count">10</span></span>
+              <span class="pill" data-mod="8" onclick="toggleMCQMod('8', this)">M8 <span class="count">20</span></span>
+              <span class="pill" data-mod="9" onclick="toggleMCQMod('9', this)">M9 <span class="count">11</span></span>
+              <span class="pill" data-mod="10" onclick="toggleMCQMod('10', this)">Scenarios <span class="count">32</span></span>
+            </div>
+            <div style="margin-top:6px; display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="select-all-btn" onclick="selectAllMCQModules()">✅ Select All</button>
+              <button class="select-all-btn" onclick="deselectAllMCQModules()">⬜ Deselect All</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section B: KBQ Setup -->
+      <div class="landing-card">
+        <h3><span class="icon">✍️</span> Section B: KBQ Settings</h3>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <label style="font-weight:500; color:#1f334a; font-size:0.85rem;">📝 #KBQs</label>
+            <input type="number" id="numKBQs" min="1" max="31" value="10" style="width:65px; padding:6px 10px; border:1px solid #c0cee2; border-radius:40px; font-weight:600; text-align:center;">
+            <span style="font-size:0.75rem; color:#4a5f7a;">(max 31)</span>
+          </div>
+          <div>
+            <div style="font-size:0.75rem; font-weight:600; color:#1a3f75; margin-bottom:6px;">Select Modules:</div>
+            <div class="module-pills" id="kbqModulePills">
+              <span class="pill active" data-mod="all" onclick="toggleKBQMod('all', this)">All <span class="count">31</span></span>
+              <span class="pill" data-mod="1" onclick="toggleKBQMod('1', this)">M1 <span class="count">4</span></span>
+              <span class="pill" data-mod="2" onclick="toggleKBQMod('2', this)">M2 <span class="count">4</span></span>
+              <span class="pill" data-mod="3" onclick="toggleKBQMod('3', this)">M3 <span class="count">4</span></span>
+              <span class="pill" data-mod="4" onclick="toggleKBQMod('4', this)">M4 <span class="count">4</span></span>
+              <span class="pill" data-mod="5" onclick="toggleKBQMod('5', this)">M5 <span class="count">3</span></span>
+              <span class="pill" data-mod="6" onclick="toggleKBQMod('6', this)">M6 <span class="count">3</span></span>
+              <span class="pill" data-mod="7" onclick="toggleKBQMod('7', this)">M7 <span class="count">3</span></span>
+              <span class="pill" data-mod="8" onclick="toggleKBQMod('8', this)">M8 <span class="count">3</span></span>
+              <span class="pill" data-mod="9" onclick="toggleKBQMod('9', this)">M9 <span class="count">3</span></span>
+            </div>
+            <div style="margin-top:6px; display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="select-all-btn" onclick="selectAllKBQModules()">✅ Select All</button>
+              <button class="select-all-btn" onclick="deselectAllKBQModules()">⬜ Deselect All</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KBQ Guidelines -->
+    <div class="kbq-guidelines">
+      <h4>📋 How to Answer Knowledge-Based Questions</h4>
+      <ul>
+        <li>Read each question carefully and provide a complete, well-structured answer</li>
+        <li>Use bullet points or numbered lists where appropriate for clarity</li>
+        <li>Refer to specific module content and terminology from the manual</li>
+        <li>Write in full sentences with proper banking terminology</li>
+      </ul>
+    </div>
+
+    <div class="landing-controls">
+      <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <label style="font-weight:500; color:#1f334a; font-size:0.85rem;">⏱️ Minutes</label>
+          <input type="number" id="timeInput" min="1" max="120" value="30" style="width:70px; padding:6px 10px; border:1px solid #c0cee2; border-radius:40px; font-weight:600; text-align:center;">
+          <button class="btn btn-outline" id="setTimerBtn" style="padding:5px 16px; font-size:0.8rem;">Set</button>
+          <span class="timer-preview" id="timerPreview">30:00</span>
+        </div>
+      </div>
+      <button class="btn btn-orange" id="startExamBtn" style="padding:12px 40px;">▶ Start Unified Exam</button>
+    </div>
+  </div>
+
+  <!-- EXAM AREA -->
+  <div id="examArea">
+    <div class="exam-top">
+      <div class="timer-display" id="timerDisplay">30:00</div>
+      <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+        <div class="section-nav">
+          <button class="active" data-section="mcq" onclick="switchExamSection('mcq')">Section A: MCQs</button>
+          <button data-section="kbq" onclick="switchExamSection('kbq')">Section B: KBQs</button>
+        </div>
+        <span class="status-badge" id="examStatus">⏳ In progress</span>
+        <button class="btn btn-outline" id="resetFromExamBtn">↺ Reset</button>
+      </div>
+    </div>
+    <div class="progress-wrapper">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <span class="progress-text" id="progressText">0%</span>
+      <span class="section-progress" id="sectionProgress">MCQ: 0/0</span>
+    </div>
+    <div id="questionContainer" class="question-grid"></div>
+    <div class="footer-bar">
+      <div class="score-area" id="scoreDisplay">📊 0 / 0</div>
+    </div>
+    <div class="submit-bottom">
+      <button class="btn btn-primary" id="submitExamBtn" style="padding: 12px 50px; font-size: 1.1rem;">📤 Submit All</button>
+    </div>
+  </div>
+
+  <!-- REVIEW AREA -->
+  <div id="reviewArea">
+    <div class="review-header">
+      <h2>📊 Exam Review</h2>
+      <button class="btn btn-outline" id="reviewResetBtn">↺ Back to Setup</button>
+    </div>
+    <div class="review-stats" id="reviewStats"></div>
+    <div id="reviewQuestions" class="review-questions"></div>
+    <div class="review-actions">
+      <button class="btn btn-primary" onclick="resetToLanding()">🔄 Try Again</button>
+      <button class="btn btn-outline" onclick="retryMissed()">📘 Retry Missed</button>
+    </div>
+  </div>
+</div>
+
+<!-- FLOATING TIMER -->
+<div id="floatingTimer">
+  <span class="timer-label">⏱ TIME</span>
+  <span id="floatingTimerDisplay">30:00</span>
+</div>
+
+<script>
+  (function() {
+    // ─── 133 MCQ QUESTIONS (full set included) ───
+    const MCQ_QS = [
+      { q: "According to the Prosperity Ltd v Lloyds (1923) ruling, a bank cannot cease doing business with a customer without 'reasonable notice.' What is the primary operational rationale for this?", opts: ["To allow the customer to find a new bank.", "To ensure outstanding cheques can be presented before closure.", "To prevent the bank from being sued for defamation.", "To allow the bank to recover all outstanding loans."], ans: 1, mod: 1, exp: "The bank must give 'reasonable notice' specifically so outstanding cheques can be presented before closure." },
+      { q: "Which specific role of a bank involves the bank acting as a 'Bailee'?", opts: ["When providing investment advice in tort.", "When a customer deposits money into a current account.", "When a customer places valuable items in safe custody.", "When the bank executes a standing order for a customer."], ans: 2, mod: 1, exp: "When a customer places valuable items in safe custody, the bank acts as a Bailee." },
+      { q: "A customer has two accounts: one is overdrawn by N50,000, and the other has a credit balance of N50,000. Under the 'Right of Set-Off,' the bank can net these only if:", opts: ["The customer provides written consent.", "The accounts are held in the same name and the same right.", "The bank gives 14 days' notice.", "The overdrawn account is a savings account."], ans: 1, mod: 1, exp: "Set-off applies only if accounts are held in the same name and the same right." },
+      { q: "Under the Tournier's Case, a banker's duty of confidentiality is NOT absolute. Which of the following is an exception?", opts: ["When a relative of the customer requests the information for a medical emergency.", "When it is in the interest of the bank to disclose.", "When a competing bank requests a status report without a mandate.", "When the customer has verbally agreed to the disclosure."], ans: 1, mod: 1, exp: "The Tournier's Case allows disclosure when it is in the interest of the bank." },
+      { q: "In the context of 'Trends Affecting Banks,' what does the manual identify as a primary cause of 'confusion' when customers visit local branches?", opts: ["High funding costs.", "The proliferation of heterogeneous products.", "Customers visiting only for complex support like loans due to online banking handling routine tasks.", "The failure of the 'Win-Win' mindset."], ans: 2, mod: 1, exp: "Customers visiting only for complex support like loans due to online banking handling routine tasks causes confusion." },
+      { q: "Scenario: An agent draws a cheque on their principal's account and attempts to deposit it into their own private account. If the bank processes this without inquiry, it is an act of:", opts: ["Proper intermediation.", "Conversion.", "Authorized Agency.", "Contractual obligation."], ans: 1, mod: 1, exp: "This is an act of conversion." },
+      { q: "Which Principle of the Consumer Protection Framework specifically requires banks to assess a consumer's financial capability before offering a product?", opts: ["Disclosure and Transparency.", "Responsible Business Conduct.", "Fair Treatment.", "Consumer Financial Education."], ans: 1, mod: 1, exp: "Responsible Business Conduct requires banks to assess a consumer's financial capability before offering a product." },
+      { q: "The 'Right of Lien' applies to property held by the bank in the ordinary course of business. Which of the following is specifically EXCLUDED from this right?", opts: ["Fixed assets used as collateral.", "Movable property.", "Items held in safe custody.", "Credit balances in current accounts."], ans: 2, mod: 1, exp: "Items held in safe custody are excluded from the Right of Lien." },
+      { q: "What happened to the Commission on Turnover (COT) in 2016?", opts: ["It was increased to N5 per mille.", "It was replaced by the Maintenance Charge.", "It was abolished and not replaced.", "It was renamed the Electronic Fund Transfer Levy."], ans: 1, mod: 1, exp: "The Commission on Turnover (COT) was replaced by the Maintenance Charge in 2016." },
+      { q: "When does the banker-customer relationship officially terminate following a discovery of signature forgery?", opts: ["Immediately upon discovery.", "Upon the closure of the account.", "Only after the investigation is completed.", "When the customer is restituted."], ans: 2, mod: 1, exp: "The relationship terminates upon the closure of the account." },
+      // Module 2
+      { q: "A senior staff member defers the submission of a CO7 document for a corporate account. What is the maximum period allowed for this deferral, and can a cheque book be issued?", opts: ["30 days; Cheque book may be issued.", "90 days; Cheque book may not be issued.", "30 days; Cheque book may not be issued.", "60 days; Cheque book is issued with management waiver."], ans: 2, mod: 2, exp: "Deferral is allowed for 30 days, but a cheque book may not be issued." },
+      { q: "Which of the following is considered a 'Statutory Document' that CANNOT be waived during account opening?", opts: ["Utility Bill.", "Reference Form.", "Certificate of Incorporation.", "Two Passport Photographs."], ans: 2, mod: 2, exp: "Certificate of Incorporation is a Statutory Document that cannot be waived." },
+      { q: "Scenario: A customer transfers N15,000 electronically to another person. What is the Electronic Money Transfer Levy (EMTL) charge, and who pays it?", opts: ["N50; The Receiver.", "N100; The Sender.", "N50; The Sender.", "Zero; because it is under N50,000."], ans: 2, mod: 2, exp: "The EMTL charge is N50, paid by the Sender." },
+      { q: "In which of the following scenarios should a bank NOT charge a Current Account Maintenance Fee (CAMF)?", opts: ["A customer-induced debit to a third party.", "A reversal of a transaction.", "A cash withdrawal by the account holder.", "A standing order to a school."], ans: 1, mod: 2, exp: "CAMF should not be charged on a reversal of a transaction." },
+      { q: "Under CSU functional classification, 'Responding to status enquiries' falls under which heading?", opts: ["Security Function.", "Products and Services Management.", "Client Information Services.", "Lobby Service Management."], ans: 2, mod: 2, exp: "Responding to status enquiries falls under Client Information Services." },
+      { q: "Which specific document is required for a Public Sector account that must be signed by persons indicated in a Gazette?", opts: ["Letter of Authorization from the supervising Ministry.", "Board Resolution.", "Letter appointing Signatories.", "Trust Deed."], ans: 2, mod: 2, exp: "Letter appointing Signatories is required for a Public Sector account." },
+      { q: "What is the primary 'proactive strategy' of the BVN initiative?", opts: ["To increase interest rates on savings.", "To build a reliable customer identification system to enhance service integrity.", "To replace the need for physical passports.", "To allow banks to share customer data with advertisers."], ans: 1, mod: 2, exp: "The BVN initiative builds a reliable customer identification system to enhance service integrity." },
+      { q: "A customer reports a cheque book as stolen. What is the recommended operational action?", opts: ["Flag the account for 30 days.", "Close the account and open a new one.", "Only stop the specific cheque numbers reported.", "Issue a new cheque book for the same account immediately."], ans: 1, mod: 2, exp: "The recommended action is to close the account and open a new one." },
+      { q: "When handling a customer complaint, what is the 'Note' specifically emphasized in the manual?", opts: ["The customer must be given a gift.", "The customer must be properly restituted and not suffer loss.", "The bank must never admit fault in writing.", "The complaint must be resolved within 1 hour."], ans: 1, mod: 2, exp: "The customer must be properly restituted and not suffer loss." },
+      { q: "Which of the following is NOT a lobby service officer's function?", opts: ["Queue management.", "Directing customers to service points.", "Performing signature verification.", "Addressing customer questions."], ans: 2, mod: 2, exp: "Performing signature verification is not a lobby service officer's function." },
+      // Module 3
+      { q: "If cash is found in a Teller's cubicle at the beginning of the day, how must it be treated?", opts: ["It should be pocketed as a bonus.", "It should be treated as 'Cash Found on Premises' and booked in the GL with approval.", "It should be added to the day's opening balance without reporting.", "It should be returned to the first customer of the day."], ans: 1, mod: 3, exp: "Cash found on premises must be booked in the GL with approval." },
+      { q: "Tellers are not permitted to sign out of the 'Vault Attendance Register' until:", opts: ["They have finished their lunch break.", "They have balanced their till for the first time.", "End of Day when returning the till box to the vault.", "They receive approval from the Internal Auditor."], ans: 2, mod: 3, exp: "Tellers sign out only at End of Day when returning the till box to the vault." },
+      { q: "What is the purpose of a 'Slug' in teller operations?", opts: ["It is a fake coin used for testing machines.", "It is a validating key used to set the time-stamping machine.", "It is a security code for the vault.", "It is a heavy weight used to keep cash from blowing away."], ans: 1, mod: 3, exp: "A 'Slug' is a validating key used to set the time-stamping machine." },
+      { q: "Scenario: A Teller has an 'Overage' (Surplus) at the end of the day. Which of the following is a possible reason cited by the manual?", opts: ["Pilfering by the Teller.", "Overpayment to a customer.", "Mixing personal money with the bank's funds.", "Error in casting where the deposit slip total is more than physical cash."], ans: 2, mod: 3, exp: "Mixing personal money with the bank's funds can cause an overage." },
+      { q: "When processing a Foreign Currency (FCY) cash withdrawal of $5,000, what is the commission charge and the associated VAT?", opts: ["1% commission ($50) and 7.5% VAT on the commission ($3.75).", "0.5% commission ($25) and 5% VAT on the total withdrawal ($250).", "1% commission ($50) and no VAT.", "7.5% commission and 1% VAT."], ans: 0, mod: 3, exp: "Commission is 1% ($50) and VAT is 7.5% on the commission ($3.75)." },
+      { q: "In 'Subject to Count' (STC) operations, within what timeframe must the bank count the cash in detail?", opts: ["1 hour.", "12 hours.", "24 hours.", "48 hours."], ans: 2, mod: 3, exp: "The bank must count the cash in detail within 24 hours." },
+      { q: "What is the correct accounting entry for an 'Internal Payment Order' where cash is paid to a staff member?", opts: ["Dr. Staff Account; Cr. Cash Account.", "Dr. Cash Account; Cr. General Ledger Account.", "Dr. General Ledger Account; Cr. Cash Account.", "Dr. Cash Account; Cr. Staff Account."], ans: 2, mod: 3, exp: "For an Internal Payment Order: Dr. General Ledger Account; Cr. Cash Account." },
+      { q: "Which of the following is a 'Teller Don't'?", opts: ["Using a calculator.", "Chatting with another teller when customers are waiting.", "Counting cash twice.", "Asking a customer for their ID."], ans: 1, mod: 3, exp: "Chatting with another teller when customers are waiting is a 'Teller Don't.'" },
+      { q: "What must a Teller do immediately if a cash difference persists after their own call-over?", opts: ["Post it to the difference account.", "Report to the supervisor, who assigns another Teller to do a call-over.", "Leave it for the next day.", "Deduct it from their next salary."], ans: 1, mod: 3, exp: "Report to the supervisor, who assigns another Teller to do a call-over." },
+      { q: "The 'Vault-In Register' is specifically used for:", opts: ["Recording customer deposits.", "Monitoring movement in and out of the vault.", "Listing teller passwords.", "Tracking branch expenses."], ans: 1, mod: 3, exp: "The 'Vault-In Register' monitors movement in and out of the vault." },
+      // Module 4
+      { q: "Which entity currently plays the role of the Central Bank of Nigeria (CBN) in the Bankers' Clearing House?", opts: ["NDIC.", "NIBSS.", "EFCC.", "SEC."], ans: 1, mod: 4, exp: "NIBSS plays the role of the CBN in the Bankers' Clearing House." },
+      { q: "What is the maximum value of a 'Special Caution Notice' served by a Paying Bank?", opts: ["N10 million.", "It is an alert, not a value instrument, to stop the Presenting Bank from giving value.", "N15 billion.", "The amount of the bank's collateral."], ans: 1, mod: 4, exp: "A Special Caution Notice is an alert, not a value instrument." },
+      { q: "If a Presenting Bank fails to honor a duly served Special Caution Notice, who is liable for the loss?", opts: ["The Paying Bank.", "The Presenting Bank.", "The CBN.", "Both banks share liability 50:50."], ans: 1, mod: 4, exp: "The Presenting Bank is liable for the loss." },
+      { q: "Under Cheque Truncation, what is the clearing demarcation for value?", opts: ["T+0.", "T+1 (Value by 10 PM).", "T+2.", "T+3."], ans: 1, mod: 4, exp: "Under Cheque Truncation, value is T+1 (by 10 PM)." },
+      { q: "A 'Dud Cheque' is an offense under the 1977 Act. What is the penalty for an individual found guilty?", opts: ["N5,000 fine.", "Imprisonment for 2 years without the option of a fine.", "Suspension from the bank for 5 years.", "A public apology in three national newspapers."], ans: 1, mod: 4, exp: "Imprisonment for 2 years without the option of a fine." },
+      { q: "During which Clearing Session are 'Fresh Cheques' NOT allowed?", opts: ["Session 1 (8 AM).", "Session 2 (11 AM).", "Session 3 (2 PM).", "All sessions allow fresh cheques."], ans: 2, mod: 4, exp: "Fresh Cheques are NOT allowed in Session 3 (2 PM)." },
+      { q: "What is the clearing collateral requirement for a 'Settlement Bank'?", opts: ["N250 million.", "N1 billion.", "N15 billion.", "N50 billion."], ans: 2, mod: 4, exp: "The collateral requirement for a Settlement Bank is N15 billion." },
+      { q: "Scenario: A cheque is returned because 'Amount in Words and Figures differ.' What is the reason code/serial number assigned in the manual for this?", opts: ["01.", "15.", "26.", "32."], ans: 2, mod: 4, exp: "The reason code for 'Amount in Words and Figures differ' is 26." },
+      { q: "If a bank processes a cheque with an irregularity (e.g., stale date) that leads to fraud, how is liability shared?", opts: ["Presenting bank is 100% liable.", "Paying bank is 100% liable.", "Jointly liable (50:50) between Presenting and Paying banks.", "The customer is 100% liable."], ans: 2, mod: 4, exp: "Liability is shared jointly (50:50) between Presenting and Paying banks." },
+      { q: "Serial issuers of dud cheques are barred from accessing credit facilities from the banking system for a period of:", opts: ["1 year.", "2 years.", "5 years.", "Life."], ans: 2, mod: 4, exp: "Serial issuers are barred for 5 years." },
+      // Module 5
+      { q: "In TROPS, what is the fundamental difference between a Bankers Acceptance (BA) and a Commercial Paper (CP) regarding the Balance Sheet?", opts: ["BAs are off-balance sheet; CPs are on-balance sheet.", "BAs are on-balance sheet (Bank is primary obligor); CPs are off-balance sheet (Customer is primary obligor).", "Both are off-balance sheet.", "Both are on-balance sheet."], ans: 1, mod: 5, exp: "BAs are on-balance sheet (Bank is primary obligor); CPs are off-balance sheet (Customer is primary obligor)." },
+      { q: "What is the maximum tenor for a Commercial Paper (CP)?", opts: ["180 days.", "270 days.", "365 days.", "91 days."], ans: 1, mod: 5, exp: "The maximum tenor for a CP is 270 days." },
+      { q: "Under the current CBN guidelines, what is the minimum purchase sum for Treasury Bills (though banks can pool funds)?", opts: ["N10 million.", "N50 million.", "N100 million.", "N1 billion."], ans: 1, mod: 5, exp: "The minimum purchase sum for T-Bills is N50 million." },
+      { q: "Which TROPS platform is used specifically for the 'Depository and trading' of securities on a real-time gross basis?", opts: ["SWIFT.", "NISS.", "DEPO X (formerly T24).", "Remita."], ans: 2, mod: 5, exp: "DEPO X (formerly T24) is used for depository and trading of securities." },
+      { q: "In an 'Open Buy Back' (OBB) transaction, what happens on the maturity date?", opts: ["The bank keeps the T/Bills forever.", "The borrower transfers principal plus interest, and the lending bank returns the bills.", "The borrower transfers only interest.", "The lender sells the bills to the CBN."], ans: 1, mod: 5, exp: "On maturity, the borrower transfers principal plus interest, and the lending bank returns the bills." },
+      { q: "What is the primary 'security' advantage of the SWIFT platform?", opts: ["It is free to use.", "It uses physical messengers.", "It allows for encrypted processing and settlement between correspondent banks.", "It only allows for Naira transactions."], ans: 2, mod: 5, exp: "SWIFT allows for encrypted processing and settlement between correspondent banks." },
+      { q: "Which document must a TROPS officer vet to ensure it is 'time-stamped and signed by two dealers'?", opts: ["Statement of Account.", "Deal Slip.", "Standing Order.", "Tax Clearance."], ans: 1, mod: 5, exp: "A Deal Slip must be time-stamped and signed by two dealers." },
+      { q: "Under the Treasury Single Account (TSA) operational modalities, when must MDA accounts with commercial banks be zeroized?", opts: ["Weekly.", "Monthly.", "At the end of every banking day.", "Only when the MDA requests it."], ans: 2, mod: 5, exp: "MDA accounts must be zeroized at the end of every banking day." },
+      { q: "A 'Fixed Buy Back' (FBB) differs from an OBB because:", opts: ["It is not secured by T/Bills.", "The counterparty cannot call for its deposit at any time.", "It is only for foreign currency.", "It has a tenor of exactly 1 day."], ans: 1, mod: 5, exp: "In an FBB, the counterparty cannot call for its deposit at any time." },
+      { q: "What is the ceiling for the aggregate value of BAs and CPs a bank can issue?", opts: ["50% of Shareholders' Funds.", "100% of Total Deposits.", "150% of the Equity capital of the Bank.", "There is no limit."], ans: 2, mod: 5, exp: "The ceiling is 150% of the Equity capital of the Bank." },
+      // Module 6
+      { q: "What is the core difference between RTGS and NEFT settlement logic?", opts: ["RTGS is batch-based; NEFT is real-time.", "RTGS is gross settlement (one-to-one); NEFT is net settlement (deferred batches).", "RTGS is only for individuals; NEFT is for banks.", "There is no difference."], ans: 1, mod: 6, exp: "RTGS is gross settlement (one-to-one); NEFT is net settlement (deferred batches)." },
+      { q: "In NIBSS operations, the originating bank's T/Bills holding must cover the transfer amount by at least:", opts: ["100%.", "110%.", "150%.", "200%."], ans: 1, mod: 6, exp: "The originating bank's T/Bills holding must cover the transfer amount by at least 110%." },
+      { q: "Which Funds Transfer product is designed for 'On-Line-Real-Time bulk payment' (e.g., salaries)?", opts: ["Single NEFT.", "NIP.", "NAPS.", "RTGS."], ans: 2, mod: 6, exp: "NAPS is designed for On-Line-Real-Time bulk payment." },
+      { q: "Scenario: A customer wants to transfer funds to a beneficiary who does not have a bank account using 'Mobile Money.' How does the beneficiary get the money?", opts: ["They can't; they must open an account first.", "They receive an electronic voucher and a code to claim funds from an agent.", "The bank mails them a cheque.", "The money is lost."], ans: 1, mod: 6, exp: "The beneficiary receives an electronic voucher and a code to claim funds from an agent." },
+      { q: "What happens if a 'Standing Order' is due but the customer's account is unfunded?", opts: ["The bank must lend the customer the money.", "The customer should be notified immediately.", "The bank should ignore it and wait for next month.", "The bank should charge a N50,000 fine immediately."], ans: 1, mod: 6, exp: "The customer should be notified immediately." },
+      { q: "Which of the following is NOT a 'Major Fintech Company' in Nigeria as listed in the manual?", opts: ["Opay.", "Moniepoint.", "Access Bank.", "PalmPay."], ans: 2, mod: 6, exp: "Access Bank is not a fintech company; it is a traditional bank." },
+      { q: "What is the primary purpose of NISS (formerly CIFT)?", opts: ["To process small retail payments.", "To process huge funds transfers between banks on the RTGS platform.", "To manage the bank's cafeteria.", "To print cheque books."], ans: 1, mod: 6, exp: "NISS processes huge funds transfers between banks on the RTGS platform." },
+      { q: "A NEFT payment is considered 'irrevocable' because:", opts: ["The law says so.", "The payer's bank will not accept the order if funds are insufficient.", "It happens in 1 second.", "The sender cannot physically reach the receiver."], ans: 1, mod: 6, exp: "The payer's bank will not accept the order if funds are insufficient." },
+      { q: "'Bulk NEFT Debits' are commonly used for:", opts: ["Paying salaries.", "Paying dividends.", "Insurance premium payments and utility bill recoveries.", "Interbank placements."], ans: 2, mod: 6, exp: "Bulk NEFT Debits are commonly used for insurance premium payments and utility bill recoveries." },
+      { q: "Which 'interface' is commonly used by participating banks to access the RTGS system?", opts: ["Participant Interface (PI).", "Teller Interface (TI).", "Customer Interface (CI).", "Global Interface (GI)."], ans: 0, mod: 6, exp: "Participant Interface (PI) is used to access the RTGS system." },
+      // Module 7
+      { q: "As of December 2025, what was the approximate value of global digital transactions?", opts: ["$1 trillion.", "$50 trillion.", "$157 trillion.", "$783 trillion."], ans: 2, mod: 7, exp: "The approximate value of global digital transactions was $157 trillion." },
+      { q: "What is Access Bank's USSD banking code?", opts: ["*901#", "*737#", "*894#", "*966#"], ans: 0, mod: 7, exp: "Access Bank's USSD code is *901#." },
+      { q: "The concept of 'Omnichannel' is best described as:", opts: ["Having many different unconnected apps.", "Seamlessly connecting individual touchpoints so a user can continue a transaction across channels.", "Only using physical branches.", "Forcing all customers to use only one channel."], ans: 1, mod: 7, exp: "Omnichannel seamlessly connects individual touchpoints across channels." },
+      { q: "Which of the following is a disadvantage of 'Credit Cards' mentioned in the manual?", opts: ["Hard to get.", "Easy to overspend.", "No rewards.", "Only works in Nigeria."], ans: 1, mod: 7, exp: "Easy to overspend is a disadvantage of credit cards." },
+      { q: "Which country has the highest number of online banking users (over 150 million)?", opts: ["Nigeria.", "USA.", "India.", "China."], ans: 2, mod: 7, exp: "India has the highest number of online banking users (over 150 million)." },
+      { q: "What is the 'most common' security measure for online banking?", opts: ["Facial recognition.", "Fingerprint.", "Password.", "Token."], ans: 2, mod: 7, exp: "Password is the most common security measure for online banking." },
+      { q: "Which of the following is a 'Strategy for migrating customers to self-service'?", opts: ["Closing all physical branches immediately.", "Providing fee waivers or reward points for using self-service.", "Charging N10,000 for every branch visit.", "Hiring more tellers."], ans: 1, mod: 7, exp: "Providing fee waivers or reward points for using self-service is a migration strategy." },
+      { q: "SMS banking disadvantage is specifically noted as:", opts: ["Slow speed.", "High cost.", "High cases of SIM card related fraud.", "Requires high-end smartphones."], ans: 2, mod: 7, exp: "SMS banking has high cases of SIM card related fraud." },
+      { q: "'P2P payments' in Nigeria are mainly used for:", opts: ["International trade.", "Lending activities without direct bank involvement (e.g., Ajobox).", "Buying government bonds.", "Paying taxes."], ans: 1, mod: 7, exp: "P2P payments in Nigeria are mainly used for lending activities without direct bank involvement." },
+      { q: "What advice does the Federal Reserve Bank of Chicago give regarding emails?", opts: ["They are the most secure way to send data.", "Do not send sensitive data via e-mail unless you know it is encrypted.", "Always use email for password recovery.", "Delete all emails immediately."], ans: 1, mod: 7, exp: "Do not send sensitive data via e-mail unless you know it is encrypted." },
+      // Module 8 (20 questions)
+      { q: "All non-oil export proceeds must be repatriated within how many days?", opts: ["30 days.", "90 days.", "180 days.", "365 days."], ans: 2, mod: 8, exp: "Non-oil export proceeds must be repatriated within 180 days." },
+      { q: "What is the NESS Administrative Levy for non-oil exports?", opts: ["0.12% of FOB.", "0.5% of FOB.", "1% of CIF.", "5% of Total Value."], ans: 1, mod: 8, exp: "The NESS levy is 0.5% of FOB." },
+      { q: "Which document is issued by the PIA if there are discrepancies that cannot be corrected immediately in an export?", opts: ["CCI.", "PCI.", "NNCI (Non-Negotiable Certificate of Inspection).", "Form NXP."], ans: 2, mod: 8, exp: "NNCI is issued if discrepancies cannot be corrected immediately." },
+      { q: "The 'HS Code' system classifies goods based on:", opts: ["Their weight.", "Their stage of fabrication.", "What they are (logical structure by economic activity).", "The country of origin."], ans: 2, mod: 8, exp: "HS Code classifies goods by what they are (logical structure by economic activity)." },
+      { q: "What is the maximum amount of PTA an individual is entitled to per quarter?", opts: ["$1,000.", "$2,000.", "$4,000.", "$5,000."], ans: 2, mod: 8, exp: "The maximum PTA per quarter is $4,000." },
+      { q: "Which of the following is an 'Invisible' transaction?", opts: ["Importing a car.", "Exporting cocoa.", "Paying foreign school fees.", "Importing machinery."], ans: 2, mod: 8, exp: "Paying foreign school fees is an invisible transaction." },
+      { q: "A Certificate of Capital Importation (CCI) for a 'Capital Loan' must have which specific document attached?", opts: ["Birth certificate.", "Loan Agreement stating terms of repayment.", "NEPC certificate.", "Phytosanitary certificate."], ans: 1, mod: 8, exp: "A Loan Agreement stating terms of repayment must be attached." },
+      { q: "Which of the following is NOT an approved payment method for exports in Nigeria?", opts: ["Payment in Advance.", "Documentary Collection.", "Open Account.", "Documentary Credit."], ans: 2, mod: 8, exp: "Open Account is not an approved payment method for exports in Nigeria." },
+      { q: "The E-Form NXP is valid for how many years from the date of registration?", opts: ["1 year.", "2 years.", "3 years.", "5 years."], ans: 2, mod: 8, exp: "The E-Form NXP is valid for 3 years." },
+      { q: "Which specific PIA is responsible for the 'South-East & North-East Zone' for Non-Oil exports?", opts: ["Angelia Int'l Services Ltd.", "Neroli Technologies Ltd.", "Gojopal Nig. Ltd.", "Globalscan System."], ans: 2, mod: 8, exp: "Gojopal Nig. Ltd. is responsible for the South-East & North-East Zone." },
+      { q: "For PTA, the journey must be at least how many hours of flight time?", opts: ["2 hours.", "3 hours.", "5 hours.", "10 hours."], ans: 2, mod: 8, exp: "The journey must be at least 5 hours of flight time." },
+      { q: "What is the purpose of the PAAR document?", opts: ["To register a company.", "To determine the level of inspection and levies for imports.", "To track export proceeds.", "To apply for a passport."], ans: 1, mod: 8, exp: "PAAR determines the level of inspection and levies for imports." },
+      { q: "Which form is used for 'Non-Commercial Exports' (e.g., gifts)?", opts: ["Form A.", "Form M.", "Form NCX.", "Form NXP."], ans: 2, mod: 8, exp: "Form NCX is used for Non-Commercial Exports." },
+      { q: "'B'Odogwu' is a platform developed by:", opts: ["Access Bank.", "The Nigerian Customs Service.", "The Central Bank of Nigeria.", "NIBSS."], ans: 1, mod: 8, exp: "'B'Odogwu' is a platform developed by the Nigerian Customs Service." },
+      { q: "For school fees payment via Form A, which specific additional document is required for the student?", opts: ["Driver's License.", "Student ID Card.", "Marriage certificate.", "Tax clearance of the parent."], ans: 1, mod: 8, exp: "Student ID Card is required for school fees payment." },
+      { q: "A 'Confirming Bank' in an LC transaction adds its commitment to pay:", opts: ["Only if the Issuing Bank fails.", "In addition to the Issuing Bank's undertaking.", "Only if the customer pays the bank first.", "Only for the shipping cost."], ans: 1, mod: 8, exp: "A Confirming Bank adds its commitment in addition to the Issuing Bank's undertaking." },
+      { q: "'Sight Collection' is also known as:", opts: ["Term Collection.", "Cash Against Documents (CAD).", "Advance Payment.", "Red Clause."], ans: 1, mod: 8, exp: "Sight Collection is also known as Cash Against Documents (CAD)." },
+      { q: "'Red Clause LC' is unique because it allows for:", opts: ["No payment at all.", "Advance payment to the beneficiary before performance.", "Payment only in Naira.", "Payment only for red-colored goods."], ans: 1, mod: 8, exp: "Red Clause LC allows advance payment to the beneficiary before performance." },
+      { q: "What percentage of the value must a shipment be insured for in an E-Form M application?", opts: ["100%.", "105%.", "110%.", "120%."], ans: 2, mod: 8, exp: "A shipment must be insured for 110% of the value." },
+      { q: "Which agency issues the 'Phytosanitary certificate' for agricultural commodities?", opts: ["NAFDAC.", "NCS.", "NAQS.", "FIRS."], ans: 2, mod: 8, exp: "NAQS issues the Phytosanitary certificate." },
+      // Module 9
+      { q: "In the Fraud Triangle, 'Rationalization' refers to:", opts: ["The financial hardship.", "The weak internal controls.", "The justification that the unethical behavior is something other than criminal.", "The peer group pressure."], ans: 2, mod: 9, exp: "Rationalization is the justification that the unethical behavior is something other than criminal." },
+      { q: "According to Cressey (1953), what percentage of fraud cases are influenced by financial pressure?", opts: ["50%.", "75%.", "95%.", "100%."], ans: 2, mod: 9, exp: "Cressey found that 95% of fraud cases are influenced by financial pressure." },
+      { q: "Which department is prone to the fraud activity 'Cheque Kiting'?", opts: ["Cash & Teller.", "Customer Service.", "Bank Clearing Operations.", "IT."], ans: 2, mod: 9, exp: "Cheque Kiting is prone in Bank Clearing Operations." },
+      { q: "'Dry Postings' is a fraud type typically associated with which area?", opts: ["Lobby management.", "General fraudulent practices.", "Treasury.", "Marketing."], ans: 1, mod: 9, exp: "'Dry Postings' is associated with General fraudulent practices." },
+      { q: "A 'Preventive' fraud strategy is defined as:", opts: ["Identifying fraud after it occurs.", "Proactive measures to stop fraud from occurring.", "Recovering lost money.", "Sending fraudsters to jail."], ans: 1, mod: 9, exp: "Preventive strategy involves proactive measures to stop fraud from occurring." },
+      { q: "'Phishing' is specifically listed under which fraud category?", opts: ["Cash & Teller.", "Electronic Banking.", "Financial Control.", "Credit/Marketing."], ans: 1, mod: 9, exp: "'Phishing' is listed under Electronic Banking." },
+      { q: "Which type of fraud involves the 'abuse of office or betrayal of confidence by trusted top Officials'?", opts: ["Deception.", "Impropriety.", "Deprivation.", "Dishonesty."], ans: 1, mod: 9, exp: "Impropriety involves abuse of office by trusted top officials." },
+      { q: "'Suppression of cash/cheque' is a fraudulent practice where:", opts: ["The teller counts too fast.", "Money or cheques are hidden or not recorded to divert funds.", "The vault is locked too early.", "The customer forgets their change."], ans: 1, mod: 9, exp: "Suppression involves hiding or not recording money or cheques to divert funds." },
+      { q: "Which strategy involves 'analyzing root causes... to identify systemic weaknesses'?", opts: ["Preventive.", "Detective.", "Corrective.", "Investigative."], ans: 2, mod: 9, exp: "Corrective strategy analyzes root causes to identify systemic weaknesses." },
+      { q: "A 'Detective' strategy uses which of the following tools?", opts: ["Segregation of duties.", "Authorization procedures.", "Anomaly detection software and Real-time monitoring.", "Employee training on ethics."], ans: 2, mod: 9, exp: "Detective strategy uses anomaly detection software and real-time monitoring." },
+      { q: "Final Scenario: An IT staff member uses their knowledge to transfer N1 from every account into their own. This is an example of:", opts: ["Deception.", "Sharp practices (exploiting system knowledge for gain).", "Impropriety.", "Breach of confidence."], ans: 1, mod: 9, exp: "This is an example of Sharp practices." },
+      // Module 10: Scenarios (32 questions - abbreviated for space)
+      { q: "Scenario: A customer operates a personal account and is also a senior partner in 'Peak Consulting.' The personal account has N1,000,000, while the partnership account is overdrawn by N1,000,000. The bank attempts to exercise a 'Right of Set-Off.' Is this legally valid?", opts: ["Yes, as the customer is a senior partner and legally responsible for the firm.", "No, because set-off only applies if accounts are in the same name and the 'same right'; a personal account and a partnership account are held in different rights.", "Yes, provided the bank gives the customer 14 days' written notice.", "No, because set-off is only permitted between two accounts in the same branch."], ans: 1, mod: 10, exp: "Set-off only applies if accounts are in the same name and the same right." },
+      { q: "Scenario: A customer deposits a sealed box containing N10,000,000 in jewelry for 'Safe Custody.' The customer later defaults on a mortgage loan with the bank. Can the bank exercise its 'Right of Lien' to sell the jewelry?", opts: ["Yes, the bank has a right to all property held in the ordinary course of business.", "No, items held in safe custody create a 'Bailee' relationship, and the Right of Lien is specifically excluded in such cases.", "Yes, but only if the customer signed a general lien agreement at account opening.", "Only if the value of the jewelry is less than the outstanding loan balance."], ans: 1, mod: 10, exp: "Items held in safe custody create a Bailee relationship, and the Right of Lien is excluded." },
+      { q: "Scenario: A high-profile customer is suspected of tax evasion. A tax official arrives and demands his statement of account without a court order, citing 'Public Duty.' Under the Tournier's Case ruling, what should the bank do?", opts: ["Disclose the information immediately to comply with the official's public duty.", "Disclose only the current balance but not the transaction history.", "Refuse disclosure; 'Public Duty' usually refers to national security/treason, and a court order or 'Compulsion of Law' is generally required for criminal investigations.", "Ask the customer for verbal permission over the phone before handing over the data."], ans: 2, mod: 10, exp: "Refuse disclosure; a court order is generally required for criminal investigations." },
+      { q: "Scenario: A bank decides to close a client's account immediately because the client is 'rude to staff.' The client has five cheques currently in the clearing system. According to the Prosperity Ltd v Lloyds (1923) ruling, what is the bank's legal error?", opts: ["Rudeness is not a valid reason for account closure.", "The bank must give 'reasonable notice' specifically so outstanding cheques can be presented before closure.", "The bank must get CBN approval before closing any account.", "The bank must wait for the customer to exhaust all the leaves in their current cheque book."], ans: 1, mod: 10, exp: "The bank must give reasonable notice so outstanding cheques can be presented before closure." },
+      { q: "Scenario: A client wants to open a corporate account for 'Global Ltd.' He has the Board Resolution and BVNs but asks to defer the submission of the 'Certificate of Incorporation' for 30 days. What is the correct protocol?", opts: ["Open the account but do not issue a cheque book for 30 days.", "Defer the document as requested to ensure a 'Win-Win' mindset.", "Refuse to open the account; Statutory Documents like the Certificate of Incorporation cannot be waived or deferred.", "Open the account and issue a temporary ATM card but no cheque book."], ans: 2, mod: 10, exp: "Statutory Documents like the Certificate of Incorporation cannot be waived or deferred." },
+      { q: "Scenario: A customer transfers N50,000 from their Savings Account to a friend's account. How much Electronic Money Transfer Levy (EMTL) should the bank charge?", opts: ["N50.", "N100.", "Zero; transfers/withdrawals from Savings Accounts are specifically exempt from the EMTL.", "N20 (Standard Stamp Duty)."], ans: 2, mod: 10, exp: "Transfers from Savings Accounts are exempt from the EMTL." },
+      { q: "Scenario: A customer induced a debit of N1,000,000 from his Current Account to pay a supplier. The bank charges a Current Account Maintenance Fee (CAMF). If the transaction is later reversed because the supplier's account was wrong, what happens to the CAMF?", opts: ["The bank keeps the CAMF as a processing fee.", "The bank must not charge CAMF on the reversal of transactions.", "The bank charges a double fee for the reversal.", "The bank applies the fee only to the credit side of the reversal."], ans: 1, mod: 10, exp: "CAMF is not charged on reversals of transactions." },
+      { q: "Scenario: A customer transfers N100,000 from his Current Account at Branch A to his other Current Account (same name) at Branch B of the same bank. What is the CAMF charge?", opts: ["N100 (1 per mille).", "N50.", "Zero; there is no charge on debits representing transfers to other accounts in the same name in the same bank.", "N1 per mille subject to negotiation."], ans: 2, mod: 10, exp: "There is no CAMF on transfers to other accounts in the same name in the same bank." },
+      { q: "Scenario: Sarah, a teller, finds N5,000 under her till box during the morning cubicle review. She keeps it aside to cover any potential shortage at the end of the day. Is this correct?", opts: ["Yes, it shows proactive risk management.", "No; the cash must be treated as 'Cash Found on Premises,' handed to the Cash Officer, and booked in the GL with approval.", "Yes, provided she reports it verbally to her supervisor.", "No; she should return it to the last customer she served yesterday."], ans: 1, mod: 10, exp: "Cash found on premises must be booked in the GL with approval." },
+      { q: "Scenario: A bulk cash customer deposits N20,000,000 on a 'Subject to Count' (STC) basis on Friday at 4 PM. The teller bundle-counts it and issues a receipt. On Tuesday morning, a detailed count reveals a N20,000 shortage. Who is liable?", opts: ["The customer, because of the STC agreement.", "The bank/teller, because the detailed count must be performed within 24 hours per SOP.", "Both parties share the loss 50:50.", "The insurance company for the bank."], ans: 1, mod: 10, exp: "The bank/teller is liable because the detailed count must be performed within 24 hours." },
+      { q: "Scenario: A customer withdraws $5,000 in cash from their Domiciliary Account. What is the total debit to the account in USD to cover the withdrawal, commission, and VAT?", opts: ["$5,050.00.", "$5,053.75 ($5,000 + 1% commission of $50 + 7.5% VAT on the commission of $3.75).", "$5,375.00.", "$5,000.00 (Fees are paid in Naira separately)."], ans: 1, mod: 10, exp: "Total debit is $5,000 + 1% commission ($50) + 7.5% VAT on commission ($3.75) = $5,053.75." },
+      { q: "Scenario: A customer arrives with N2,000,000 for deposit at 4:30 PM (after the system cut-off). The teller detailed-counts the cash in the customer's presence. What is the next required step?", opts: ["Reject the deposit and ask the customer to return tomorrow.", "Stamp the slip 'late deposit for credit on [Next Date]' and obtain the supervisor's initials in the Late Cash register.", "Process it as a normal deposit with today's value date.", "Ask the customer to sign an STC agreement."], ans: 1, mod: 10, exp: "Stamp the slip 'late deposit for credit on [Next Date]' and obtain supervisor's initials." },
+      { q: "Scenario: The Clearing Return session closes at 2 PM. At 3:30 PM, the Paying Bank discovers an Inward clearing cheque for N50,000,000 is fraudulent. What must they do to avoid liability?", opts: ["Nothing; they missed the return deadline and are 100% liable.", "Serve a Special Caution Notice on the Presenting Bank by 4 PM (within 2 hours of closure).", "Call the customer and tell them to stop the payment.", "Send a physical letter to the NIBSS Superintendent."], ans: 1, mod: 10, exp: "Serve a Special Caution Notice by 4 PM (within 2 hours of closure)." },
+      { q: "Scenario: A Presenting Bank clears a cheque with a 'Stale Date' (8 months old). The Paying Bank fails to notice and pays it. If fraud is later discovered, how is liability shared?", opts: ["Presenting bank is 100% liable for presenting an irregular instrument.", "Paying bank is 100% liable for honoring it.", "Presenting and Paying banks are jointly liable (50:50).", "The customer is liable for not securing their cheque book."], ans: 2, mod: 10, exp: "Presenting and Paying banks are jointly liable (50:50)." },
+      { q: "Scenario: A bank is found to be persistently transmitting clearing data that does not match the scanned cheque image. What is the specific sanction?", opts: ["N5,000 per item.", "N1,000 per item and potential suspension after 3 warnings.", "Immediate expulsion from the Clearing House.", "100% liability for any fraud on those items."], ans: 1, mod: 10, exp: "N1,000 per item and potential suspension after 3 warnings." },
+      { q: "Scenario: A corporate client issues a 200-day Promissory Note. The bank 'Accepts' the note, agreeing to be the primary obligor. What instrument has been created?", opts: ["Commercial Paper (CP).", "Bankers Acceptance (BA).", "Treasury Bill.", "Open Buy Back."], ans: 1, mod: 10, exp: "A Bankers Acceptance (BA) has been created." },
+      { q: "Scenario: In an 'Open Buy Back' (OBB) transaction, Bank A lends funds to Bank B, secured by T/Bills. The tenor is 91 days. On Day 10, Bank A decides they need the liquidity. Can they recall the funds?", opts: ["No, they must wait until the 91st day.", "Yes; in an OBB, the counterparty or the bank can call for the deposit at any time.", "Only if the CBN approves the early liquidation.", "Only if Bank B fails to maintain its collateral."], ans: 1, mod: 10, exp: "In an OBB, the counterparty or the bank can call for the deposit at any time." },
+      { q: "Scenario: At 4:50 PM, a commercial bank still has N1 billion in a Government Ministry (MDA) account. Under TSA modalities, what must happen?", opts: ["The bank keeps the N1 billion as 'float' for tomorrow's lending.", "The account must be 'zeroized' and funds remitted to the CBN Consolidated Revenue Account by the end of the day.", "The bank pays 1% interest to the Ministry.", "The bank moves the funds to the Ministry's Savings account."], ans: 1, mod: 10, exp: "The account must be zeroized and funds remitted to the CBN by the end of the day." },
+      { q: "Scenario: A customer needs to transfer N100,000,000 'instantly' and 'gross' to another bank. Which platform should the bank use?", opts: ["NEFT (Net settlement).", "NIP (Instant Payment).", "RTGS / NISS (Real-Time Gross Settlement).", "Mobile Money."], ans: 2, mod: 10, exp: "RTGS / NISS is used for instant gross settlement." },
+      { q: "Scenario: A payroll manager wants to send 500 staff salaries at once. Which NIBSS product is specifically designed for this bulk 'On-Line-Real-Time' payment?", opts: ["Single NEFT.", "NAPS (NIBSS Automated Payment System).", "RTGS.", "Form A."], ans: 1, mod: 10, exp: "NAPS is designed for bulk On-Line-Real-Time payments." },
+      { q: "Scenario: A customer has a 'Standing Order' for N50,000 due on the 15th. On the 15th, the account has only N45,000. What is the bank's duty?", opts: ["Transfer N45,000 and the remaining N5,000 later.", "Overdraw the account to fulfill the order.", "Notify the customer immediately that there are inadequate funds.", "Wait until the next business day to check again."], ans: 2, mod: 10, exp: "Notify the customer immediately that there are inadequate funds." },
+      { q: "Scenario: A customer receives an email from 'The Bank' asking for their token code to 'update their profile.' They provide it and lose N500,000. Which specific security advice from the manual was violated?", opts: ["Always use ATMs in daylight.", "Do not send sensitive data via e-mail unless you know it is encrypted.", "Only use USSD for transfers.", "Never use your phone for banking."], ans: 1, mod: 10, exp: "Do not send sensitive data via e-mail unless you know it is encrypted." },
+      { q: "Scenario: A bank wants to migrate 'Brick and Mortar' customers to self-service. Which is a valid 'disincentive' strategy mentioned?", opts: ["Fining customers for entering the banking hall.", "Charging higher fees for transactions that could have been done via self-service.", "Closing the branch without notice.", "Removing all chairs from the lobby."], ans: 1, mod: 10, exp: "Charging higher fees for transactions that could have been done via self-service is a disincentive." },
+      { q: "Scenario: An individual is traveling to London (6-hour flight) and wants to purchase PTA. They are 17 years old. Are they eligible?", opts: ["Yes, because the flight is over 5 hours.", "No; applicants for PTA must be eighteen (18) years of age and above.", "Yes, if their parents provide a written guarantee.", "Only if they have a valid BVN."], ans: 1, mod: 10, exp: "Applicants for PTA must be 18 years of age and above." },
+      { q: "Scenario: An importer wants to bring in 'Human Remains' for burial. Does this require a Pre-Shipment Inspection Agents (PIA) inspection under NESS?", opts: ["Yes, all imports are inspected.", "No; human remains are specifically exempted from NESS inspection.", "Only if the value exceeds $5,000.", "Yes, and it must be marked 'Valid for FOREX.'"], ans: 1, mod: 10, exp: "Human remains are specifically exempted from NESS inspection." },
+      { q: "Scenario: An exporter ships cocoa and expects payment in 150 days. Under CBN guidelines, is this allowed for non-oil exports?", opts: ["No, payment must be received in 90 days.", "Yes; non-oil export proceeds must be repatriated within 180 days of shipment.", "Yes, but only if they have an LC.", "No, only 30 days are allowed."], ans: 1, mod: 10, exp: "Non-oil export proceeds must be repatriated within 180 days." },
+      { q: "Scenario: A student wants to pay school fees abroad via E-Form A. Which specific document is required for the student according to the manual?", opts: ["Parent's Tax Clearance.", "Student ID Card.", "High school diploma.", "Local government of origin certificate."], ans: 1, mod: 10, exp: "Student ID Card is required." },
+      { q: "Scenario: An importer wants to pay for machinery. They have funds in their own Domiciliary account. Do they need an E-Form M?", opts: ["No, Form M is only for buying CBN forex.", "Yes; all import transactions (irrespective of the source of funding) are processed by completing a Form M.", "Only if the value is over $10,000.", "They should use a Form A instead."], ans: 1, mod: 10, exp: "All import transactions require a Form M, irrespective of the source of funding." },
+      { q: "Scenario: A bank staff member is under intense pressure from their peer group to live a flashy lifestyle. This pressure represents which part of the Fraud Triangle?", opts: ["Opportunity.", "Rationalization.", "Pressure / Incentive.", "Sharp Practice."], ans: 2, mod: 10, exp: "Peer pressure is part of Pressure / Incentive in the Fraud Triangle." },
+      { q: "Scenario: An IT staff member uses their 'Unrestricted access to the database' to change a friend's balance. This is an example of which department's fraud type?", opts: ["Financial Control.", "Customer Service.", "Information Technology.", "Treasury."], ans: 2, mod: 10, exp: "This is an Information Technology fraud type." },
+      { q: "Scenario: A fraudster installs a small device on an ATM to read the magnetic stripe of a customer's card. This specific practice is known as:", opts: ["Phishing.", "Skimming.", "Social Engineering.", "Trojan."], ans: 1, mod: 10, exp: "This practice is known as skimming." },
+      { q: "Final Scenario: A bank discovers a major fraud and 'analyzes the root cause to identify systemic weaknesses.' Which fraud risk management strategy is this?", opts: ["Preventive.", "Detective.", "Corrective.", "Investigative."], ans: 2, mod: 10, exp: "Analyzing root causes to identify systemic weaknesses is a Corrective strategy." }
+    ];
+
+    // ─── 31 KNOWLEDGE-BASED QUESTIONS ───
+    const KBQ_QS = [
+      { module: 1, q: "Define 'Banking Business' according to the Banks and Other Financial Institutions Act (BOFIA) 2020 as amended.", model: "According to BOFIA 2020, 'Banking Business' means the business of receiving deposits on current account, savings account or other similar account, paying or collecting cheques drawn by or paid in by customers, and provision of finance or such other business as the Governor may designate." },
+      { module: 1, q: "Explain the 'Right of Set-Off' and state the specific condition that must be met regarding the account names for a bank to exercise this right.", model: "The Right of Set-Off allows a bank to combine two accounts held by the same customer to settle a debt. The specific condition is that the accounts must be held in the same name and the same right." },
+      { module: 1, q: "List the four exceptional circumstances under the Tournier's Case where a banker may disclose a customer's information.", model: "The four exceptions are: 1) Compulsion of law, 2) Public duty (national security/treason), 3) Interest of the bank, and 4) Consent of the customer." },
+      { module: 1, q: "Distinguish between the 'Bailor/Bailee' relationship and the 'Debtor/Creditor' relationship in the context of safe custody arrangements.", model: "In a Bailor/Bailee relationship (safe custody), the bank holds the customer's physical items and must return the exact items. In a Debtor/Creditor relationship (deposit accounts), the bank owes the customer an equivalent amount of money." },
+      { module: 2, q: "What are the three functional classifications of the Customer Service Unit (CSU)?", model: "The three functional classifications are: 1) Lobby Service Management, 2) Client Information Services, and 3) Products and Services Management." },
+      { module: 2, q: "Identify three statutory documents required for opening a Corporate Current Account that cannot be waived or deferred.", model: "1) Certificate of Incorporation, 2) Memorandum and Articles of Association (MEMART), and 3) Board Resolution authorizing account opening and signatories." },
+      { module: 2, q: "Explain the Electronic Money Transfer Levy (EMTL), including the threshold amount and which party is responsible for the charge.", model: "EMTL is a levy on electronic transfers. The threshold amount is N10,000, and the charge is N50. The sender is responsible for the charge." },
+      { module: 2, q: "Outline the five key steps for handling a customer complaint as prescribed in the manual.", model: "1) Acknowledge the complaint promptly, 2) Gather all relevant information, 3) Investigate the issue thoroughly, 4) Resolve the complaint and restitute the customer, and 5) Follow up to ensure satisfaction." },
+      { module: 3, q: "Describe the 'Beginning of Day' routine for a Teller, specifically focusing on the treatment of any cash found in the cubicle.", model: "The Teller inspects the cubicle and any cash found must be treated as 'Cash Found on Premises,' handed to the Cash Officer, and booked in the General Ledger with approval." },
+      { module: 3, q: "Define the term 'Subject to Count' (STC) and state the mandatory timeframe within which a detailed count must be performed.", model: "STC is a procedure where cash is accepted based on bundle count with a detailed count to follow. The mandatory timeframe for the detailed count is 24 hours." },
+      { module: 3, q: "What are the dual-control requirements for vault operations, and which specific registers are used to monitor movement?", model: "Vault operations require dual control (two authorized persons present for access). Registers used include the Vault-In Register and Vault Attendance Register." },
+      { module: 3, q: "Explain the accounting entries (debit and credit) required for a Foreign Currency (FCY) cash withdrawal, including the commission and VAT components.", model: "Debit Customer's Domiciliary Account (principal). Credit Cash (FCY). For commission: Debit Customer's Account, Credit Commission Income. For VAT: Debit Customer's Account, Credit VAT Payable." },
+      { module: 4, q: "Explain the concept of Cheque Truncation and how it differs from traditional physical cheque exchange.", model: "Cheque Truncation is the electronic exchange of cheque images rather than physical cheques. It differs by eliminating physical movement, reducing processing time, and enabling T+1 value settlement." },
+      { module: 4, q: "What is a Special Caution Notice, and what is the specific deadline for its submission after the closure of a return session?", model: "A Special Caution Notice is an alert served by a Paying Bank to stop a Presenting Bank from giving value on a suspect cheque. The deadline for submission is within 2 hours after the closure of the return session." },
+      { module: 4, q: "According to the Dishonoured Cheques Act 1977, what is the criminal penalty for an individual found guilty of issuing a dud cheque?", model: "The penalty is imprisonment for a term of 2 years without the option of a fine." },
+      { module: 4, q: "Describe the liability sharing between the Presenting and Paying banks when a cheque with an irregularity (such as a stale date) is cleared and leads to fraud.", model: "The Presenting and Paying banks are jointly liable (50:50) when an irregular cheque is cleared and fraud is discovered." },
+      { module: 5, q: "Compare and contrast Bankers Acceptances (BAs) and Commercial Papers (CPs) in terms of which party is the primary obligor and how they are recorded on the balance sheet.", model: "In a BA, the bank is the primary obligor (on-balance sheet). In a CP, the customer is the primary obligor (off-balance sheet for the bank)." },
+      { module: 5, q: "Explain the difference between Open Buy Back (OBB) and Fixed Buy Back (FBB) transactions.", model: "In OBB, funds are lent against T/Bills and the lender can call for the deposit at any time. In FBB, the counterparty cannot call for its deposit, providing a fixed tenor." },
+      { module: 5, q: "Describe the Treasury Single Account (TSA) operational modality regarding the daily balance of MDA accounts held with commercial banks.", model: "Under TSA, MDA accounts with commercial banks must be zeroized at the end of every banking day, with funds remitted to the CBN Consolidated Revenue Account." },
+      { module: 6, q: "Define Real-Time Gross Settlement (RTGS) and explain what 'Gross' settlement means in this context.", model: "RTGS is a funds transfer system where transactions are settled individually in real-time. 'Gross' means each transaction is settled on a one-to-one basis without netting." },
+      { module: 6, q: "What is the NIBSS collateral requirement for an originating bank to effect a transfer?", model: "The originating bank's T/Bills holding must cover the transfer amount by at least 110%." },
+      { module: 6, q: "Distinguish between Single NEFT and Bulk NEFT (Credits and Debits) and provide examples of each.", model: "Single NEFT is a one-off electronic transfer. Bulk NEFT Credits are used for salary payments. Bulk NEFT Debits are used for insurance premium collections and utility bill recoveries." },
+      { module: 7, q: "Define the 'Omnichannel' customer experience and explain its importance in modern banking.", model: "Omnichannel is a seamless, integrated customer experience across all channels where a customer can start a transaction on one channel and complete it on another without losing context." },
+      { module: 7, q: "List three common security challenges associated with electronic banking as identified in the manual.", model: "1) Password vulnerabilities, 2) Phishing attacks, and 3) SIM card-related fraud in SMS banking." },
+      { module: 7, q: "What is the Access Bank USSD code, and what are two advantages of using USSD for financial services?", model: "The Access Bank USSD code is *901#. Advantages include: 1) Works on any mobile phone without internet, and 2) Simple and fast for basic banking transactions." },
+      { module: 8, q: "Distinguish between 'Visible' and 'Invisible' foreign exchange transactions and give two examples of each.", model: "Visible transactions are trade in physical goods. Examples: Export of cocoa, Import of machinery. Invisible transactions are non-physical services. Examples: Payment of foreign school fees, International travel expenses." },
+      { module: 8, q: "What is the purpose of a Clean Certificate of Inspection (CCI), and which agency is responsible for issuing it for non-oil exports?", model: "A CCI certifies that non-oil exports have been inspected and meet quality standards. The Pre-Shipment Inspection Agents (PIA) are responsible for issuance." },
+      { module: 8, q: "State the repatriation timelines for export proceeds for both Oil and Non-Oil exports.", model: "Oil exports: 90 days. Non-Oil exports: 180 days of shipment." },
+      { module: 9, q: "Define the three pillars of the Fraud Triangle as propounded by Cressey and Sutherland.", model: "1) Pressure/Incentive, 2) Opportunity, and 3) Rationalization." },
+      { module: 9, q: "Explain the difference between Preventive, Detective, and Corrective fraud risk management strategies.", model: "Preventive: proactively stop fraud. Detective: identify fraud after it occurs. Corrective: analyze root causes and fix systemic weaknesses." },
+      { module: 9, q: "What is 'Sharp Practice' in the context of banking fraud? Provide a specific example from the manual.", model: "Sharp Practice refers to exploiting system knowledge for personal gain. Example: An IT staff member using unrestricted database access to transfer small amounts into their own account." }
+    ];
+
+    // ─── DOM REFS ───
+    const landingArea = document.getElementById('landingArea');
+    const examArea = document.getElementById('examArea');
+    const reviewArea = document.getElementById('reviewArea');
+    const timeInput = document.getElementById('timeInput');
+    const timerPreview = document.getElementById('timerPreview');
+    const numMCQs = document.getElementById('numMCQs');
+    const numKBQs = document.getElementById('numKBQs');
+    const startBtn = document.getElementById('startExamBtn');
+    const submitBtn = document.getElementById('submitExamBtn');
+    const resetFromExamBtn = document.getElementById('resetFromExamBtn');
+    const reviewResetBtn = document.getElementById('reviewResetBtn');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const floatingTimerDisplay = document.getElementById('floatingTimerDisplay');
+    const floatingTimer = document.getElementById('floatingTimer');
+    const examStatus = document.getElementById('examStatus');
+    const container = document.getElementById('questionContainer');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const setTimerBtn = document.getElementById('setTimerBtn');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const sectionProgress = document.getElementById('sectionProgress');
+    const reviewStats = document.getElementById('reviewStats');
+    const reviewQuestions = document.getElementById('reviewQuestions');
+
+    // ─── STATE ───
+    let mcqSelectedModules = ['all'];
+    let kbqSelectedModules = ['all'];
+    let mcqQuestions = [];
+    let kbqQuestions = [];
+    let mcqAnswers = [];
+    let kbqAnswers = {};
+    let currentSection = 'mcq';
+    let examActive = false;
+    let examSubmitted = false;
+    let timerInterval = null;
+    let timeSeconds = 1800;
+
+    // ─── MCQ MODULE SELECTION ───
+    window.toggleMCQMod = function(mod, el) {
+      if (mod === 'all') {
+        mcqSelectedModules = ['all'];
+        document.querySelectorAll('#mcqModulePills .pill').forEach(p => p.classList.remove('active'));
+        el.classList.add('active');
+      } else {
+        const allPill = document.querySelector('#mcqModulePills .pill[data-mod="all"]');
+        allPill.classList.remove('active');
+        el.classList.toggle('active');
+        mcqSelectedModules = Array.from(document.querySelectorAll('#mcqModulePills .pill.active')).map(p => p.dataset.mod);
+        if (mcqSelectedModules.length === 0) {
+          mcqSelectedModules = ['all'];
+          allPill.classList.add('active');
+        }
+      }
+    };
+
+    window.selectAllMCQModules = function() {
+      mcqSelectedModules = ['all'];
+      document.querySelectorAll('#mcqModulePills .pill').forEach(p => p.classList.remove('active'));
+      document.querySelector('#mcqModulePills .pill[data-mod="all"]').classList.add('active');
+    };
+
+    window.deselectAllMCQModules = function() {
+      mcqSelectedModules = [];
+      document.querySelectorAll('#mcqModulePills .pill').forEach(p => p.classList.remove('active'));
+    };
+
+    // ─── KBQ MODULE SELECTION ───
+    window.toggleKBQMod = function(mod, el) {
+      if (mod === 'all') {
+        kbqSelectedModules = ['all'];
+        document.querySelectorAll('#kbqModulePills .pill').forEach(p => p.classList.remove('active'));
+        el.classList.add('active');
+      } else {
+        const allPill = document.querySelector('#kbqModulePills .pill[data-mod="all"]');
+        allPill.classList.remove('active');
+        el.classList.toggle('active');
+        kbqSelectedModules = Array.from(document.querySelectorAll('#kbqModulePills .pill.active')).map(p => p.dataset.mod);
+        if (kbqSelectedModules.length === 0) {
+          kbqSelectedModules = ['all'];
+          allPill.classList.add('active');
+        }
+      }
+    };
+
+    window.selectAllKBQModules = function() {
+      kbqSelectedModules = ['all'];
+      document.querySelectorAll('#kbqModulePills .pill').forEach(p => p.classList.remove('active'));
+      document.querySelector('#kbqModulePills .pill[data-mod="all"]').classList.add('active');
+    };
+
+    window.deselectAllKBQModules = function() {
+      kbqSelectedModules = [];
+      document.querySelectorAll('#kbqModulePills .pill').forEach(p => p.classList.remove('active'));
+    };
+
+    // ─── PREPARE QUESTIONS ───
+    function prepareMCQQuestions() {
+      let pool = MCQ_QS;
+      if (!mcqSelectedModules.includes('all')) {
+        pool = MCQ_QS.filter(q => mcqSelectedModules.includes(String(q.mod)));
+      }
+      if (pool.length === 0) return [];
+      let desired = parseInt(numMCQs.value) || 1;
+      if (desired < 1) desired = 1;
+      if (desired > 133) desired = 133;
+      if (desired > pool.length) desired = pool.length;
+      numMCQs.value = desired;
+      const shuffled = [...pool];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled.slice(0, desired);
+    }
+
+    function prepareKBQQuestions() {
+      let pool = KBQ_QS;
+      if (!kbqSelectedModules.includes('all')) {
+        pool = KBQ_QS.filter(q => kbqSelectedModules.includes(String(q.module)));
+      }
+      if (pool.length === 0) return [];
+      let desired = parseInt(numKBQs.value) || 1;
+      if (desired < 1) desired = 1;
+      if (desired > 31) desired = 31;
+      if (desired > pool.length) desired = pool.length;
+      numKBQs.value = desired;
+      const shuffled = [...pool];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled.slice(0, desired);
+    }
+
+    // ─── UPDATE PROGRESS ───
+    function updateProgress() {
+      const totalMCQ = mcqQuestions.length;
+      const totalKBQ = kbqQuestions.length;
+      const total = totalMCQ + totalKBQ;
+
+      let answeredMCQ = 0;
+      for (let i = 0; i < totalMCQ; i++) {
+        if (mcqAnswers[i] !== undefined && mcqAnswers[i] !== -1) answeredMCQ++;
+      }
+
+      let answeredKBQ = 0;
+      for (let i = 0; i < totalKBQ; i++) {
+        const ta = document.getElementById(`kbq-answer-${i}`);
+        if (ta && ta.value.trim().length > 0) answeredKBQ++;
+      }
+
+      const totalAnswered = answeredMCQ + answeredKBQ;
+      const pct = total > 0 ? Math.round((totalAnswered / total) * 100) : 0;
+      progressFill.style.width = pct + '%';
+      progressText.textContent = pct + '%';
+
+      if (currentSection === 'mcq') {
+        sectionProgress.textContent = `MCQ: ${answeredMCQ}/${totalMCQ} | KBQ: ${answeredKBQ}/${totalKBQ}`;
+        scoreDisplay.textContent = `📊 ${answeredMCQ}/${totalMCQ} MCQs`;
+      } else {
+        sectionProgress.textContent = `KBQ: ${answeredKBQ}/${totalKBQ} | MCQ: ${answeredMCQ}/${totalMCQ}`;
+        scoreDisplay.textContent = `📊 ${answeredKBQ}/${totalKBQ} KBQs`;
+      }
+    }
+
+    // ─── SWITCH EXAM SECTION ───
+    window.switchExamSection = function(section) {
+      if (!examActive || examSubmitted) return;
+      currentSection = section;
+      document.querySelectorAll('.section-nav button').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.section-nav button[data-section="${section}"]`).classList.add('active');
+      renderQuestions();
+    };
+
+    // ─── RENDER QUESTIONS ───
+    function renderQuestions() {
+      if (!container) return;
+
+      if (currentSection === 'mcq') {
+        renderMCQQuestions();
+      } else {
+        renderKBQQuestions();
+      }
+      updateProgress();
+    }
+
+    function renderMCQQuestions() {
+      if (mcqQuestions.length === 0) {
+        container.innerHTML = '<p style="color:#4a5f7a; text-align:center; padding:20px;">No MCQ questions selected. Please check your settings.</p>';
+        return;
+      }
+      let html = '';
+      mcqQuestions.forEach((item, idx) => {
+        const selected = (mcqAnswers[idx] !== undefined) ? mcqAnswers[idx] : -1;
+        let disabledClass = (examSubmitted || !examActive) ? 'disabled-options' : '';
+        let highlight = '';
+        if (examSubmitted) {
+          if (selected === item.ans) highlight = 'correct-highlight';
+          else if (selected !== -1 && selected !== item.ans) highlight = 'wrong-highlight';
+        }
+        html += `<div class="question-item ${highlight}">
+          <div class="question-text">MCQ ${idx+1}. ${item.q}</div>
+          <div class="options ${disabledClass}">`;
+        item.opts.forEach((opt, oi) => {
+          const checked = (selected === oi) ? 'checked' : '';
+          const disabled = (examSubmitted || !examActive) ? 'disabled' : '';
+          html += `<label>
+            <input type="radio" name="mcq${idx}" value="${oi}" ${checked} ${disabled}>
+            ${opt}
+          </label>`;
+        });
+        html += `</div>`;
+        if (examActive && !examSubmitted) {
+          html += `<button class="clear-btn" onclick="clearMCQAnswer(${idx})">✕ Clear answer</button>`;
+        }
+        let fb = '';
+        if (examSubmitted) {
+          if (selected !== -1) {
+            const isCorrect = (selected === item.ans);
+            fb = `<div class="feedback-block show">
+              <span class="${isCorrect ? 'correct-ans' : 'wrong-ans'}">${isCorrect ? '✅ Correct' : '❌ Incorrect'}</span>
+              <div class="justification">${item.exp}</div>
+            </div>`;
+          } else {
+            fb = `<div class="feedback-block show">
+              <span class="wrong-ans">⚠️ Not answered</span>
+              <div class="justification">Correct answer: ${item.opts[item.ans]}</div>
+              <div class="justification">${item.exp}</div>
+            </div>`;
+          }
+        }
+        html += fb;
+        html += `</div>`;
+      });
+      container.innerHTML = html;
+
+      if (examActive && !examSubmitted) {
+        container.querySelectorAll('input[type="radio"]').forEach(radio => {
+          radio.addEventListener('change', function() {
+            const name = this.name;
+            const idx = parseInt(name.replace('mcq', ''));
+            const val = parseInt(this.value);
+            if (!isNaN(idx) && !examSubmitted) {
+              mcqAnswers[idx] = val;
+              updateProgress();
+            }
+          });
+        });
+      }
+    }
+
+    function clearMCQAnswer(idx) {
+      if (examSubmitted || !examActive) return;
+      mcqAnswers[idx] = -1;
+      const radios = container.querySelectorAll(`input[name="mcq${idx}"]`);
+      radios.forEach(r => r.checked = false);
+      updateProgress();
+    }
+
+    function renderKBQQuestions() {
+      if (kbqQuestions.length === 0) {
+        container.innerHTML = '<p style="color:#4a5f7a; text-align:center; padding:20px;">No KBQ questions selected. Please check your settings.</p>';
+        return;
+      }
+      let html = '';
+      kbqQuestions.forEach((item, idx) => {
+        const saved = kbqAnswers[idx] || '';
+        const disabled = examSubmitted || !examActive;
+        html += `<div class="question-item">
+          <div class="question-text">KBQ ${idx+1}. ${item.q}</div>
+          <div style="font-size:0.75rem; color:#e8841a; font-weight:600; margin-bottom:6px;">Module ${item.module}</div>
+          <div class="kbq-answer-area">
+            <textarea id="kbq-answer-${idx}" placeholder="Type your answer here..." rows="4" ${disabled ? 'disabled' : ''}>${saved}</textarea>
+          </div>
+          <div class="kbq-model-answer" id="kbq-model-${idx}">
+            <strong>📝 Model Answer</strong>
+            ${item.model}
+          </div>
+        </div>`;
+      });
+      container.innerHTML = html;
+
+      if (examActive && !examSubmitted) {
+        for (let i = 0; i < kbqQuestions.length; i++) {
+          const ta = document.getElementById(`kbq-answer-${i}`);
+          if (ta) {
+            ta.addEventListener('input', function() {
+              kbqAnswers[i] = this.value;
+              updateProgress();
+            });
+          }
+        }
+      }
+
+      if (examSubmitted) {
+        for (let i = 0; i < kbqQuestions.length; i++) {
+          document.getElementById(`kbq-model-${i}`).classList.add('show');
+        }
+      }
+    }
+
+    // ─── TIMER ───
+    function startTimer(seconds) {
+      if (timerInterval) clearInterval(timerInterval);
+      timeSeconds = seconds;
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        if (timeSeconds <= 0) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+          if (examActive && !examSubmitted) {
+            alert('⏰ Time is up! Submitting automatically.');
+            submitExam();
+          }
+          return;
+        }
+        timeSeconds--;
+        updateTimerDisplay();
+        if (examActive && !examSubmitted) updateProgress();
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timeSeconds / 60);
+      const secs = timeSeconds % 60;
+      const str = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+      timerDisplay.textContent = str;
+      timerPreview.textContent = str;
+      floatingTimerDisplay.textContent = str;
+      floatingTimer.classList.toggle('warning', timeSeconds < 60);
+    }
+
+    // ─── START EXAM ───
+    function startExam() {
+      if (examActive) return;
+
+      const mcqQs = prepareMCQQuestions();
+      const kbqQs = prepareKBQQuestions();
+
+      if (mcqQs.length === 0 && kbqQs.length === 0) {
+        alert('No questions available for selected modules. Please select at least one module for each section.');
+        return;
+      }
+
+      mcqQuestions = mcqQs;
+      kbqQuestions = kbqQs;
+      mcqAnswers = new Array(mcqQuestions.length).fill(-1);
+      kbqAnswers = {};
+
+      examActive = true;
+      examSubmitted = false;
+      currentSection = 'mcq';
+
+      startBtn.disabled = true;
+      submitBtn.disabled = false;
+      examStatus.textContent = '⏳ In progress';
+
+      let mins = parseInt(timeInput.value);
+      if (isNaN(mins) || mins < 1) mins = 1;
+      if (mins > 120) mins = 120;
+      timeInput.value = mins;
+      timeSeconds = mins * 60;
+      updateTimerDisplay();
+
+      if (timerInterval) clearInterval(timerInterval);
+      startTimer(timeSeconds);
+
+      floatingTimer.style.display = 'block';
+      landingArea.style.display = 'none';
+      examArea.style.display = 'flex';
+      reviewArea.style.display = 'none';
+
+      document.querySelector('.section-nav button[data-section="mcq"]').classList.add('active');
+      document.querySelector('.section-nav button[data-section="kbq"]').classList.remove('active');
+
+      renderQuestions();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ─── SUBMIT EXAM ───
+    function submitExam() {
+      if (examSubmitted) return;
+      if (!examActive) { alert('Exam not started.'); return; }
+
+      examSubmitted = true;
+      examActive = false;
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      submitBtn.disabled = true;
+      examStatus.textContent = '✅ Submitted';
+      floatingTimer.style.display = 'none';
+
+      // Calculate MCQ results
+      let mcqCorrect = 0, mcqWrong = 0, mcqUnanswered = 0;
+      mcqQuestions.forEach((q, i) => {
+        const ans = mcqAnswers[i];
+        if (ans === -1) mcqUnanswered++;
+        else if (ans === q.ans) mcqCorrect++;
+        else mcqWrong++;
+      });
+
+      // Calculate KBQ results
+      let kbqAnswered = 0;
+      for (let i = 0; i < kbqQuestions.length; i++) {
+        const ta = document.getElementById(`kbq-answer-${i}`);
+        if (ta && ta.value.trim().length > 0) {
+          kbqAnswered++;
+          document.getElementById(`kbq-model-${i}`).classList.add('show');
+        }
+        if (ta) ta.disabled = true;
+      }
+
+      const totalMCQ = mcqQuestions.length;
+      const totalKBQ = kbqQuestions.length;
+      const total = totalMCQ + totalKBQ;
+      const totalAnswered = mcqCorrect + kbqAnswered;
+      const pct = total > 0 ? Math.round((totalAnswered / total) * 100) : 0;
+
+      // Show review
+      reviewStats.innerHTML = `
+        <div class="review-stat-item"><div class="number">${pct}%</div><div class="label">Overall Score</div></div>
+        <div class="review-stat-item"><div class="number green">${mcqCorrect}</div><div class="label">MCQ Correct</div></div>
+        <div class="review-stat-item"><div class="number red">${mcqWrong}</div><div class="label">MCQ Wrong</div></div>
+        <div class="review-stat-item"><div class="number orange">${mcqUnanswered}</div><div class="label">MCQ Unanswered</div></div>
+        <div class="review-stat-item"><div class="number green">${kbqAnswered}</div><div class="label">KBQ Answered</div></div>
+        <div class="review-stat-item"><div class="number orange">${totalKBQ - kbqAnswered}</div><div class="label">KBQ Not Answered</div></div>
+        <div class="review-stat-item"><div class="number">${total}</div><div class="label">Total Questions</div></div>
+      `;
+
+      let html = '';
+      // MCQ Review
+      mcqQuestions.forEach((q, i) => {
+        const ans = mcqAnswers[i];
+        let statusClass = '', statusText = '';
+        if (ans === -1) { statusClass = 'unanswered'; statusText = '⚠️ Not answered'; }
+        else if (ans === q.ans) { statusClass = 'correct'; statusText = '✅ Correct'; }
+        else { statusClass = 'wrong'; statusText = '❌ Wrong'; }
+        const userAnsText = ans !== -1 ? q.opts[ans] : 'Not answered';
+        html += `<div class="review-question-item">
+          <div class="q-text">MCQ ${i+1}. ${q.q}</div>
+          <div>
+            <span class="q-answer ${statusClass}">${statusText}</span>
+            <span style="margin-left:12px; font-size:0.9rem; color:#333;">Your answer: ${userAnsText}</span>
+          </div>
+          ${ans !== q.ans ? `<div class="q-correct-answer">Correct answer: ${q.opts[q.ans]}</div>` : ''}
+          <div style="font-size:0.85rem; color:#3b4d66; background:#f0f6fe; padding:0.5rem 0.8rem; border-radius:12px; margin-top:0.4rem;">${q.exp}</div>
+        </div>`;
+      });
+
+      // KBQ Review
+      kbqQuestions.forEach((item, i) => {
+        const ta = document.getElementById(`kbq-answer-${i}`);
+        const userAns = ta ? ta.value : 'Not answered';
+        const isAnswered = userAns.trim().length > 0;
+        html += `<div class="review-question-item">
+          <div class="q-text">KBQ ${i+1}. ${item.q}</div>
+          <div>
+            <span class="q-answer ${isAnswered ? 'correct' : 'unanswered'}">${isAnswered ? '✅ Answered' : '⚠️ Not answered'}</span>
+            <span style="margin-left:12px; font-size:0.9rem; color:#333;">Your answer: ${userAns || 'Not provided'}</span>
+          </div>
+          <div style="font-size:0.85rem; color:#3b4d66; background:#f0f6fe; padding:0.5rem 0.8rem; border-radius:12px; margin-top:0.4rem;">
+            <strong>Model Answer:</strong> ${item.model}
+          </div>
+        </div>`;
+      });
+
+      reviewQuestions.innerHTML = html;
+      examArea.style.display = 'none';
+      reviewArea.style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ─── RETRY MISSED ───
+    window.retryMissed = function() {
+      const missed = mcqQuestions.filter((q, i) => mcqAnswers[i] !== q.ans);
+      if (missed.length === 0) { alert('No missed MCQ questions!'); return; }
+      mcqQuestions = missed;
+      mcqAnswers = new Array(missed.length).fill(-1);
+      examSubmitted = false;
+      examActive = true;
+      submitBtn.disabled = false;
+      examStatus.textContent = '⏳ Retry missed';
+      reviewArea.style.display = 'none';
+      examArea.style.display = 'flex';
+      currentSection = 'mcq';
+      renderQuestions();
+    };
+
+    // ─── RESET ───
+    window.resetToLanding = function() {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      examActive = false;
+      examSubmitted = false;
+      mcqQuestions = [];
+      kbqQuestions = [];
+      mcqAnswers = [];
+      kbqAnswers = {};
+      submitBtn.disabled = false;
+      startBtn.disabled = false;
+      examStatus.textContent = '🔒 Strict mode';
+      floatingTimer.style.display = 'none';
+      landingArea.style.display = 'block';
+      examArea.style.display = 'none';
+      reviewArea.style.display = 'none';
+      const mins = parseInt(timeInput.value) || 30;
+      timeSeconds = mins * 60;
+      updateTimerDisplay();
+      container.innerHTML = '';
+      scoreDisplay.textContent = '📊 0 / 0';
+      progressFill.style.width = '0%';
+      progressText.textContent = '0%';
+      sectionProgress.textContent = 'MCQ: 0/0 | KBQ: 0/0';
+      document.querySelectorAll('.module-pills .pill').forEach(p => p.style.pointerEvents = 'auto');
+      numMCQs.disabled = false;
+      numKBQs.disabled = false;
+    };
+
+    // ─── EVENT LISTENERS ───
+    startBtn.addEventListener('click', startExam);
+    submitBtn.addEventListener('click', function() {
+      if (examActive && !examSubmitted) {
+        if (confirm('Submit all answers? You cannot change after submission.')) {
+          submitExam();
+        }
+      }
+    });
+    resetFromExamBtn.addEventListener('click', function() {
+      if (examActive && !examSubmitted) {
+        if (!confirm('Reset exam? Progress will be lost.')) return;
+      }
+      resetToLanding();
+    });
+    reviewResetBtn.addEventListener('click', resetToLanding);
+    setTimerBtn.addEventListener('click', function() {
+      if (examActive) { alert('Cannot change timer while exam is running.'); return; }
+      let mins = parseInt(timeInput.value);
+      if (isNaN(mins) || mins < 1) mins = 1;
+      if (mins > 120) mins = 120;
+      timeInput.value = mins;
+      timeSeconds = mins * 60;
+      updateTimerDisplay();
+    });
+
+    // ─── INIT ───
+    (function init() {
+      const mins = parseInt(timeInput.value) || 30;
+      timeSeconds = mins * 60;
+      updateTimerDisplay();
+      landingArea.style.display = 'block';
+      examArea.style.display = 'none';
+      reviewArea.style.display = 'none';
+      floatingTimer.style.display = 'none';
+    })();
+
+    window.addEventListener('beforeunload', function(e) {
+      if (examActive && !examSubmitted) {
+        e.preventDefault();
+        e.returnValue = 'Exam in progress. Leave?';
+      }
+    });
+  })();
+</script>
+</body>
+</html>
